@@ -1,7 +1,7 @@
 // Events
 
 var events = [{
-    month: 9,
+    month: "10",
     day: 16,
     year: 2017,
     title: "Live Performance By Jordan Tydings",
@@ -10,7 +10,7 @@ var events = [{
     highlight: "false"
 },
 {
-    month: 10,
+    month: 11,
     day: 8,
     year: 2017,
     title: "Live Performance By Jordan Tydings",
@@ -19,44 +19,59 @@ var events = [{
     highlight: "false"
 }];
 
-// var monthSection = document.getElementById('current-month');
-var nextSection = document.getElementById('next-month');
+// arrays
+var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+var currentEvents = [];
+var nextevents = [];
+var upcoming = [];
+
+
+// variables
 var d = new Date();
 var currentMonth = d.getMonth();
 var currentDay = d.getDate();
-
-var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var currentMText = months[currentMonth];
 var nextMText = months[currentMonth + 1];
+
+// contruct arrays
+function current() {
+    for (var i = 0; i <= events.length; i++) {
+        if (events[i].month == currentMonth + 1) {
+            currentEvents.push("" + events + "");
+        }
+    }
+}
+
+current();
 
 $('#currentmonth').text(currentMText);
 $('#nextmonth').text(nextMText);
 
 
 
-for (var i = 0; i <= events.length; i++){
-    if (events[i].month == currentMonth + 1) {
-        var currentEvents = 
-        '<div class="date">'+
-            '<h3>' + currentMText + ' ' + events[i].day + ', ' + events[i].year + '</h3>' +
-            '<p>' + events[i].title + '</p>' +
-            '<p>' + events[i].description + '</p>' +
-            '<a href="'+ events[i].link + '" class="btn btnred">More Details</a>' + 
-        '</div>';
-        $('#currentevents').append(currentEvents);
-    } else if (events[i].month == currentMonth + 2) {
-        var nextEvents = 
-        '<div class="date">'+
-            '<h3>' + nextMText + ' ' + events[i].day + ', ' + events[i].year + '</h3>' +
-            '<p>' + events[i].title + '</p>' +
-            '<p>' + events[i].description + '</p>' +
-            '<a href="'+ events[i].link + '" class="btn btnred">More Details</a>' + 
-        '</div>';
-        $('#nextevents').append(nextEvents);
-    } else if (events[i].month == currentMonth + 1 && events[i].day >= currentDay || events[i].month == currentmonth + 2 && events[i].day <= currentDay) {
-        var upcoming = '<h3>' + months[events.month - 1] + ' ' + events.day + '</h3>' +
-        '<p>' + events.title + '</p>';
-        $('#upcoming').append(upcoming);
-    }
+// for (var i = 0; i <= events.length; i++){
+//     if (events[i].month == currentMonth + 1) {
+//         var currentEvents = 
+//         '<div class="date">'+
+//             '<h3>' + currentMText + ' ' + events[i].day + ', ' + events[i].year + '</h3>' +
+//             '<p>' + events[i].title + '</p>' +
+//             '<p>' + events[i].description + '</p>' +
+//             '<a href="'+ events[i].link + '" class="btn btnred">More Details</a>' + 
+//         '</div>';
+//         $('#currentevents').append(currentEvents);
+//     } else if (events[i].month == currentMonth + 2) {
+//         var nextEvents = 
+//         '<div class="date">'+
+//             '<h3>' + nextMText + ' ' + events[i].day + ', ' + events[i].year + '</h3>' +
+//             '<p>' + events[i].title + '</p>' +
+//             '<p>' + events[i].description + '</p>' +
+//             '<a href="'+ events[i].link + '" class="btn btnred">More Details</a>' + 
+//         '</div>';
+//         $('#nextevents').append(nextEvents);
+//     } else if (events[i].month == currentMonth + 1 && events[i].day >= currentDay || events[i].month == currentmonth + 2 && events[i].day <= currentDay) {
+//         var upcoming = '<h3>' + months[events.month - 1] + ' ' + events.day + '</h3>' +
+//         '<p>' + events.title + '</p>';
+//         $('#upcoming').append(upcoming);
+//     }
     
-}
+// }
