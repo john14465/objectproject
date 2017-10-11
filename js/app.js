@@ -1,7 +1,7 @@
 // Events
 
 var events = [{
-    month: "10",
+    "month": "10",
     day: 16,
     year: 2017,
     title: "Live Performance By Jordan Tydings",
@@ -21,8 +21,6 @@ var events = [{
 
 // arrays
 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-var currentEvents = [];
-var nextevents = [];
 var upcoming = [];
 
 
@@ -34,15 +32,25 @@ var currentMText = months[currentMonth];
 var nextMText = months[currentMonth + 1];
 
 // contruct arrays
-function current() {
-    for (var i = 0; i <= events.length; i++) {
-        if (events[i].month == currentMonth + 1) {
-            currentEvents.push("" + events + "");
-        }
-    }
-}
 
-current();
+var currentEvents = events.filter(function(event){
+    return event.month == currentMonth + 1;
+});
+
+var nextevents = events.filter(function(event){
+    return event.month == currentMonth + 2;
+});
+
+var upcomingArr = Array.prototype.push.apply(currentEvents,nextevents);
+// function current() {
+//     for (var i = 0; i <= events.length; i++) {
+//         if (events[i].month == currentMonth + 1) {
+//             console.log("Sucess");
+//         }
+//     }
+// }
+
+// current();
 
 $('#currentmonth').text(currentMText);
 $('#nextmonth').text(nextMText);
