@@ -38,59 +38,115 @@ var currentDay = d.getDate();
 var currentMText = months[currentMonth];
 var nextMText = months[currentMonth + 1];
 
-// contruct arrays
-
-var currentEventsArr = events.filter(function(event){
-    return event.month == currentMonth + 1;
-});
-
-var nextEventsArr = events.filter(function(event){
-    return event.month == currentMonth + 2;
-});
-
-var upcomingCurrent = currentEventsArr.filter(function(event){
-    return event.day >= currentDay;
-});
-
-upcomingEventsArr = upcomingCurrent.concat(nextEventsArr);
-
-// Constructing into HTML
-
 // creating the titles
 $('#currentmonth').text(currentMText);
 $('#nextmonth').text(nextMText);
 
+// get Json information
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var respsonse = JSON.parse(xhttp.responseText);
+        var events = respsonse.event;
+
+        var currentEventsArr = events.filter(function(event){
+            return event.month == currentMonth + 1;
+        });
+        
+        var nextEventsArr = events.filter(function(event){
+            return event.month == currentMonth + 2;
+        });
+        
+        var upcomingCurrent = currentEventsArr.filter(function(event){
+            return event.day >= currentDay;
+        });
+        
+        upcomingEventsArr = upcomingCurrent.concat(nextEventsArr);
+
+        for (var i = 0; i < currentEventsArr.length; i++) {
+            var currentEvents = 
+                '<div class="date">'+
+                    '<h3>' + currentMText + ' ' + currentEventsArr[i].day + ', ' + currentEventsArr[i].year + '</h3>' +
+                    '<p>' + currentEventsArr[i].title + '</p>' +
+                    '<p>' + currentEventsArr[i].description + '</p>' +
+                    '<a href="'+ currentEventsArr[i].link + '" class="btn btnred">More Details</a>' + 
+                '</div>'; 
+            $('#currentevents').append(currentEvents);
+        }
+
+        for (var i = 0; i < nextEventsArr.length; i++) {
+            var nextEvents = 
+                '<div class="date">'+
+                    '<h3>' + nextMText + ' ' + nextEventsArr[i].day + ', ' + nextEventsArr[i].year + '</h3>' +
+                    '<p>' + nextEventsArr[i].title + '</p>' +
+                    '<p>' + nextEventsArr[i].description + '</p>' +
+                    '<a href="'+ nextEventsArr[i].link + '" class="btn btnred">More Details</a>' + 
+                '</div>'; 
+            $('#nextevents').append(nextEvents);
+        }
+        
+        for (var i = 0; i < 4; i++) {
+            var upcomingEvents = 
+                '<div class="date">'+
+                    '<h3>' + months[upcomingEventsArr[i].month - 1] + ' ' + upcomingEventsArr[i].day + ', ' + upcomingEventsArr[i].year + '</h3>' +
+                    '<p>' + upcomingEventsArr[i].title + '</p>' +
+                '</div>'; 
+            $('#upcoming').append(upcomingEvents);            
+        }
+    }
+};
+xhttp.open("GET", "events.json", true);
+xhttp.send();
+
+// contruct arrays
+
+// var currentEventsArr = events.filter(function(event){
+//     return event.month == currentMonth + 1;
+// });
+
+// var nextEventsArr = events.filter(function(event){
+//     return event.month == currentMonth + 2;
+// });
+
+// var upcomingCurrent = currentEventsArr.filter(function(event){
+//     return event.day >= currentDay;
+// });
+
+// upcomingEventsArr = upcomingCurrent.concat(nextEventsArr);
+
+// Constructing into HTML
+
 // creating the current events
-for (var i = 0; i < currentEventsArr.length; i++) {
-    var currentEvents = 
-        '<div class="date">'+
-            '<h3>' + currentMText + ' ' + currentEventsArr[i].day + ', ' + currentEventsArr[i].year + '</h3>' +
-            '<p>' + currentEventsArr[i].title + '</p>' +
-            '<p>' + currentEventsArr[i].description + '</p>' +
-            '<a href="'+ currentEventsArr[i].link + '" class="btn btnred">More Details</a>' + 
-        '</div>'; 
-    $('#currentevents').append(currentEvents);
-}
+// for (var i = 0; i < currentEventsArr.length; i++) {
+//     var currentEvents = 
+//         '<div class="date">'+
+//             '<h3>' + currentMText + ' ' + currentEventsArr[i].day + ', ' + currentEventsArr[i].year + '</h3>' +
+//             '<p>' + currentEventsArr[i].title + '</p>' +
+//             '<p>' + currentEventsArr[i].description + '</p>' +
+//             '<a href="'+ currentEventsArr[i].link + '" class="btn btnred">More Details</a>' + 
+//         '</div>'; 
+//     $('#currentevents').append(currentEvents);
+// }
 
 // creating the next month events
-for (var i = 0; i < nextEventsArr.length; i++) {
-    var nextEvents = 
-        '<div class="date">'+
-            '<h3>' + nextMText + ' ' + nextEventsArr[i].day + ', ' + nextEventsArr[i].year + '</h3>' +
-            '<p>' + nextEventsArr[i].title + '</p>' +
-            '<p>' + nextEventsArr[i].description + '</p>' +
-            '<a href="'+ nextEventsArr[i].link + '" class="btn btnred">More Details</a>' + 
-        '</div>'; 
-    $('#nextevents').append(nextEvents);
-}
+// for (var i = 0; i < nextEventsArr.length; i++) {
+//     var nextEvents = 
+//         '<div class="date">'+
+//             '<h3>' + nextMText + ' ' + nextEventsArr[i].day + ', ' + nextEventsArr[i].year + '</h3>' +
+//             '<p>' + nextEventsArr[i].title + '</p>' +
+//             '<p>' + nextEventsArr[i].description + '</p>' +
+//             '<a href="'+ nextEventsArr[i].link + '" class="btn btnred">More Details</a>' + 
+//         '</div>'; 
+//     $('#nextevents').append(nextEvents);
+// }
 
 // creating the upcoming events section of the index page
-for (var i = 0; i < 4; i++) {
-    var upcomingEvents = 
-        '<div class="date">'+
-            '<h3>' + months[upcomingEventsArr[i].month - 1] + ' ' + upcomingEventsArr[i].day + ', ' + upcomingEventsArr[i].year + '</h3>' +
-            '<p>' + upcomingEventsArr[i].title + '</p>' +
-        '</div>'; 
-    $('#upcoming').append(upcomingEvents);
+// for (var i = 0; i < 4; i++) {
+//     var upcomingEvents = 
+//         '<div class="date">'+
+//             '<h3>' + months[upcomingEventsArr[i].month - 1] + ' ' + upcomingEventsArr[i].day + ', ' + upcomingEventsArr[i].year + '</h3>' +
+//             '<p>' + upcomingEventsArr[i].title + '</p>' +
+//         '</div>'; 
+//     $('#upcoming').append(upcomingEvents);
     
-}
+// }
